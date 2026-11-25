@@ -70,6 +70,7 @@ function buildSwatches() {
       e.stopPropagation();
       app.color = c;
       [...wrap.children].forEach((x) => x.classList.toggle('active', x.dataset.color === c));
+      persistColorSelection();
       toast('Renk ' + c + ' seçildi');
     });
     wrap.appendChild(b);
@@ -159,16 +160,19 @@ function bindUi() {
 
   pickupBtn = document.querySelector('[data-act="pickup"]');
 
-  // Chat input
+  // Chat input (HUD'da yoksa atla - panel sonradan gelebilir)
   const chatInput = $('#chatInput');
-  $('#sendBtn').addEventListener('click', sendChat);
-  chatInput.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter') {
-      e.preventDefault();
-      sendChat();
-      chatInput.value = '';
-    }
-  });
+  const sendBtn = $('#sendBtn');
+  if (chatInput && sendBtn) {
+    sendBtn.addEventListener('click', sendChat);
+    chatInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        sendChat();
+        chatInput.value = '';
+      }
+    });
+  }
 
   for (const btn of document.querySelectorAll('[data-act]')) {
     const act = btn.dataset.act;
