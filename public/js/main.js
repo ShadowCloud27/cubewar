@@ -1348,8 +1348,8 @@ const COLOR_PALETTES = {
     ground: "#121a30"
   }
 }
-if (room.roundStartsAt) {
-  app.roundStartTime = room.roundStartsAt;
+if (app.room && app.room.roundStartsAt) {
+  app.roundStartTime = app.room.roundStartsAt;
 }
 
 // Visual round timer element
@@ -1454,9 +1454,9 @@ if (app.phase === "playing") {
   // Celebrate with particles
   setTimeout(() => {
     // Spawn celebration particles at center
-    const centerX = room.width / 2;
+    const centerX = (app.room?.width || 40) / 2;
     const centerY = 1.5;
-    const centerZ = room.length / 2;
+    const centerZ = (app.room?.length || 40) / 2;
     for (let i = 0; i < 50; i++) {
       setTimeout(() => {
         world.burst(centerX, centerY, centerZ, 0xffd700, 8, 2);
@@ -1467,7 +1467,7 @@ if (app.phase === "playing") {
 // Reset after 5 seconds
   setTimeout(() => {
     app.phase = "playing";
-    roundTimerEl.textContent = "[' + Math.floor(app.roundTime / 60000) + ':00]";
+    roundTimerEl.textContent = '[' + Math.floor(app.roundTime / 60000) + ':00]';
     roundTimerEl.style.background = "rgba(0,0,0,0.8)";
   }, 5000);
 }
@@ -1478,12 +1478,13 @@ if (app.phase === "playing") {
 
 // Update timer when round changes
 const roomUpdater = setInterval(() => {
-  if (room.phase === 'playing' && !app.roundStartTime) {
+  const rm = app.room;
+  if (!rm) return;
+  if (rm.phase === 'playing' && !app.roundStartTime) {
     app.roundStartTime = Date.now();
-    roundTimerEl.textContent = '[' + app.roundTime / 60000 + ':00]';
+    roundTimerEl.textContent = '[' + Math.floor(app.roundTime / 60000) + ':00]';
   }
-  if (room.phase !== 'playing') {
-    clearInterval(updateTimer);
+  if (rm.phase !== 'playing') {
     clearInterval(roomUpdater);
     roundTimerEl.remove();
   }
