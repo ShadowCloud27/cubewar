@@ -876,9 +876,9 @@ document.addEventListener('keydown', (e) => {
   }
 });
 
-// Add emote shortcut: press E to dance
-$('#chatInput').addEventListener('keydown', (e) => {
-  if (e.key === 'e') {
+// Add emote shortcut: press E to dance (chat input is created later, so delegate)
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'e' && e.target && e.target.id === 'chatInput') {
     e.preventDefault();
     doEmote('dance');
   }
