@@ -1,0 +1,19 @@
+{
+  "name": "cubewar",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "CubeWar - topla, yaz, dönüştür. Fizik tabanlı arena savaşı.",
+  "scripts": {
+    "start": "node server/index.js",
+    "dev": "node server/index.js"
+  },
+  "dependencies": {
+    "express": "^4.21.2",
+    "three": "^0.170.0",
+    "ws": "^8.18.0"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
